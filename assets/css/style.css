@@ -9,3 +9,9 @@
   .jumbotron h3{
     color: white;
 }
+body{
+    background-image: url("../images/IMG_5044.JPG");
+    background-attachment: fixed;
+    background-size: 100% auto;
+    height: auto;
+}
