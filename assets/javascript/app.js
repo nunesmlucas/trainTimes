@@ -29,11 +29,11 @@ $("#add-train").on("click", function (event) {
     destination = $("#destination-input").val().trim();
     first = moment($("#first-input").val(), "HH:mm");
     frequency = $("#frequency-input").val().trim();
-
-
-
-
-    // Time is 3:30 AM
+//Test to see the values --- Not grabbing though...
+    console.log(trainName);
+    console.log(destination);
+    console.log(first);
+    console.log(frequency);
 
     // First Time (pushed back 1 year to make sure it comes before current time)
     var firstTimeConverted = moment(first, "HH:mm").subtract(1, "years");
@@ -68,30 +68,27 @@ $("#add-train").on("click", function (event) {
         frequency: frequency,
         nextTrain: nextTrain,
         minutesAway: tMinutesTillTrain
-        // dateAdded: firebase.database.ServerValue.TIMESTAMP
     });
-
 
 });
 
 // Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
-// dataRef.ref().on("child_added", function (childSnapshot) {
-dataRef.ref().on("value", function (snapshot) {
+dataRef.ref().on("child_added", function (childSnapshot) {
 
-    // // Log everything that's coming out of snapshot
-    // console.log(snapshot.val().trainName);
-    // console.log(snapshot.val().destination);
-    // console.log(snapshot.val().first);
-    // console.log(snapshot.val().frequency);
+    // Log everything that's coming out of childSnapshot
+    console.log(childSnapshot.val().trainName);
+    console.log(childSnapshot.val().destination);
+    console.log(childSnapshot.val().first);
+    console.log(childSnapshot.val().frequency);
 
-    var fNextTrainn = moment(snapshot.val().nextTrain).format("hh:mm");
+    var fNextTrainn = moment(childSnapshot.val().nextTrain).format("hh:mm");
 
     $("<tbody>").append(
-        "<tr><td> " + snapshot.val().trainName +
-        " </td><td> " + snapshot.val().destination +
-        " </td><td> " + snapshot.val().frequency +
+        "<tr><td> " + childSnapshot.val().trainName +
+        " </td><td> " + childSnapshot.val().destination +
+        " </td><td> " + childSnapshot.val().frequency +
         " </td><td > " + fNextTrainn +
-        " </td><td > " + moment(snapshot.val().tMinutesTillTrain).format("HH:mm") +
+        " </td><td > " + moment(childSnapshot.val().tMinutesTillTrain).format("HH:mm") +
         " </td></tr>");
 
     // Handle the errors
