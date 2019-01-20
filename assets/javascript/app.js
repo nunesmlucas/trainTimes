@@ -22,19 +22,36 @@ var minutesAway = 0;
 // Capture Button Click
 $("#add-train").on("click", function (event) {
     event.preventDefault();
-
+    console.log(this);
     // Code in the logic for storing and retrieving the most recent train.
     // Don't forget to provide initial data to your Firebase database.
     trainName = $("#trainName-input").val().trim();
     destination = $("#destination-input").val().trim();
-    first = moment($("#first-input").val(), "HH:mm");
+    first = $("#first-input").val().trim();
     frequency = $("#frequency-input").val().trim();
-//Test to see the values --- Not grabbing though...
+
+    //Test to see the values --- Not grabbing though...
     console.log(trainName);
     console.log(destination);
     console.log(first);
     console.log(frequency);
 
+
+    // Code for the push
+    dataRef.ref().push({
+        trainName: trainName,
+        destination: destination,
+        first: first,
+        frequency: frequency,
+        // minutesAway: tMinutesTillTrain
+    });
+
+});
+
+// Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
+dataRef.ref().on("child_added", function (childSnapshot) {
+
+    var first = (childSnapshot.val().first);
     // First Time (pushed back 1 year to make sure it comes before current time)
     var firstTimeConverted = moment(first, "HH:mm").subtract(1, "years");
     console.log(firstTimeConverted);
@@ -57,40 +74,32 @@ $("#add-train").on("click", function (event) {
 
     // Next Train
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+    nxtTrain = moment(nextTrain).format("hh:mm a");
+    console.log("ARRIVAL TIME: " + nxtTrain);
 
-
-    // Code for the push
-    dataRef.ref().push({
-        trainName: trainName,
-        destination: destination,
-        first: first,
-        frequency: frequency,
-        nextTrain: nextTrain,
-        minutesAway: tMinutesTillTrain
-    });
-
-});
-
-// Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
-dataRef.ref().on("child_added", function (childSnapshot) {
 
     // Log everything that's coming out of childSnapshot
-    console.log(childSnapshot.val().trainName);
-    console.log(childSnapshot.val().destination);
-    console.log(childSnapshot.val().first);
-    console.log(childSnapshot.val().frequency);
 
-    var fNextTrainn = moment(childSnapshot.val().nextTrain).format("hh:mm");
+    var trName = (childSnapshot.val().trainName);
+    var trDestination = (childSnapshot.val().destination);
+    var trFreq = (childSnapshot.val().frequency);
 
-    $("<tbody>").append(
-        "<tr><td> " + childSnapshot.val().trainName +
-        " </td><td> " + childSnapshot.val().destination +
-        " </td><td> " + childSnapshot.val().frequency +
-        " </td><td > " + fNextTrainn +
-        " </td><td > " + moment(childSnapshot.val().tMinutesTillTrain).format("HH:mm") +
-        " </td></tr>");
+    console.log(trName);
+    console.log(trDestination);
+    console.log(trFreq);
 
+
+    // Create the new row
+    var newRow = $("<tr>").append(
+        $("<td>").text(trName),
+        $("<td>").text(trDestination),
+        $("<td>").text(trFreq),
+        $("<td>").text(nxtTrain),
+        $("<td>").text(tMinutesTillTrain)
+    );
+
+    // Append the new row to the table
+    $("#train-table > tbody").append(newRow);
     // Handle the errors
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);

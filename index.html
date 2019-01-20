@@ -22,7 +22,8 @@
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css">
     <!-- LINK TO FIREBASE GOES HERE -->
     <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
-    <script type="text/javascript" src="assets/javascript/app.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script defer type="text/javascript" src="assets/javascript/app.js"></script>
 
 </head>
 
@@ -43,7 +44,7 @@
                         Current Train Schedule
                     </div>
                     <div class="card-body">
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="train-table">
                             <thead>
                                 <tr>
                                     <th scope="col">Train Name:</th>
@@ -53,15 +54,7 @@
                                     <th scope="col">Minutes Away</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                         <!-- <div id="full-member-list"></div> -->
                     </div>
@@ -95,7 +88,7 @@
                             <label for="frequency-input">Frequency (min):</label>
                             <input class="form-control" id="frequency-input" type="number">
                         </div>
-                        <button class="btn btn-default" id="add-user" type="submit">Submit</button>
+                        <button class="btn btn-default" id="add-train" type="submit">Submit</button>
                     </form>
 
                 </div>
@@ -105,7 +98,6 @@
     </div>
 
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery.js"></script>
 
 </body>
 
