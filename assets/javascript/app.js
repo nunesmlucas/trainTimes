@@ -65,16 +65,17 @@ dataRef.ref().on("child_added", function (childSnapshot) {
     console.log("DIFFERENCE IN TIME: " + diffTime);
 
     // Time apart (remainder)
-    var tRemainder = diffTime % frequency;
+    var tRemainder = diffTime % childSnapshot.val().frequency;
     console.log(tRemainder);
 
     // Minute Until Train
-    var tMinutesTillTrain = frequency - tRemainder;
+    var tMinutesTillTrain = childSnapshot.val().frequency - tRemainder;
     console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
 
     // Next Train
-    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    nxtTrain = moment(nextTrain).format("hh:mm a");
+    var nextTrain = currentTime.add(tMinutesTillTrain, "minutes");
+    console.log({ nextTrain: nextTrain} );
+    var nxtTrain = nextTrain.format("hh:mm");
     console.log("ARRIVAL TIME: " + nxtTrain);
 
 
