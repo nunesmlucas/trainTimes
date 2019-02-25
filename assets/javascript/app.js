@@ -48,6 +48,7 @@ $("#add-train").on("click", function (event) {
 
 });
 
+
 // Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
 dataRef.ref().on("child_added", function (childSnapshot) {
 
@@ -74,7 +75,7 @@ dataRef.ref().on("child_added", function (childSnapshot) {
 
     // Next Train
     var nextTrain = currentTime.add(tMinutesTillTrain, "minutes");
-    console.log({ nextTrain: nextTrain} );
+    console.log({ nextTrain: nextTrain });
     var nxtTrain = nextTrain.format("hh:mm");
     console.log("ARRIVAL TIME: " + nxtTrain);
 
@@ -89,6 +90,10 @@ dataRef.ref().on("child_added", function (childSnapshot) {
     console.log(trDestination);
     console.log(trFreq);
 
+    // var deleteButton = $("<button>").text("Delete");
+    // deleteButton.attr("type", "button");
+    // deleteButton.addClass("btn btn-danger");
+    // deleteButton.attr("id", "deleteRecord");
 
     // Create the new row
     var newRow = $("<tr>").append(
@@ -96,8 +101,18 @@ dataRef.ref().on("child_added", function (childSnapshot) {
         $("<td>").text(trDestination),
         $("<td>").text(trFreq),
         $("<td>").text(nxtTrain),
-        $("<td>").text(tMinutesTillTrain)
+        $("<td>").text(tMinutesTillTrain),
+        // deleteButton
     );
+    // Stack Overflow ------
+    // https://stackoverflow.com/questions/48352026/delete-button-to-remove-entire-row-of-firebase-data
+
+    // $("#deleteRecord").on("click", function (event) {
+    //     //Need to remove THIS TR. 
+    //     alert("Testing that this works");
+    //     console.log("hitting the delete button!");
+
+    // });
 
     // Append the new row to the table
     $("#train-table > tbody").append(newRow);
@@ -105,4 +120,6 @@ dataRef.ref().on("child_added", function (childSnapshot) {
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
 });
+
+
 
